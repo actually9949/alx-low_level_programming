@@ -4,7 +4,6 @@
  * _strlen_recursion - a function that prints  a string in reverse
  *
  * @s: the string pointer
- 100p
  *
  * Return: the length of the string
  */
