@@ -2,10 +2,7 @@
 
 /**
  * _puts_recursion - a function that prints  a string, followed a new line
- 
- comment on 0puts *
- * @s: the string pointer
- *
+ * @s: the string pointer *
  * Return: nothing
  */
 
