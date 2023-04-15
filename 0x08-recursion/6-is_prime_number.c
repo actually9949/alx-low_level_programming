@@ -17,7 +17,7 @@ int is_prime_helper(int num, int s)
 }
 
 /**
- * is_prime_number - this is a function that check if a number is a prime number
+ * is_prime_number - a function that check if a number is a prime number
  *
  * @n: the number
  *
