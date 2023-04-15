@@ -1,6 +1,5 @@
 /**
  * wildcmp - compares two strings if they are identical
- 102t
  *
  * @s1: first string cannot contain *
  * @s2: second string can contain *
