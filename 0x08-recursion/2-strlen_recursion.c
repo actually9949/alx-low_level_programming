@@ -2,8 +2,7 @@
 
 /**
  * _strlen_recursion - a function that prints  a string in reverse
- 
- strlen_recursion*
+ *
  * @s: the string pointer
  *
  * Return: the length of the string
