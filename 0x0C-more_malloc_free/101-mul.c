@@ -1,134 +1,89 @@
 #include "main.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /**
- * _memset - fills memory with a constant byte
- *
- * @s: input pointer that represents memory block
- *     to fill
- * @b: characters to fill/set
- * @n: number of bytes to be filled
- *
- * Return: pointer to the filled memory area
+ * error_exit - prints an error message exits with status 98
  */
-
-char *_memset(char *s, char b, unsigned int n)
+void error_exit(void)
 {
-	unsigned int i = 0;
+	char *err_msg = "Error";
 
-	while (i < n)
+	while (*err_msg != '\0')
 	{
-		s[i] = b;
-		i++;
+		_putchar(*err_msg);
+		err_msg++;
 	}
-	return (s);
+	_putchar('\n');
+	exit(98);
 }
 
 /**
- * _calloc - function that allocates memory
- *           for an array using memset
+ * is_digit - check if a string is made of digits
+ * @str: the string to check
  *
- * @nmemb: size of array
- * @size: size of each element
- *
- * Return: pointer to new allocated memory
+ * Return: 1 if true, otherwise 0
  */
-
-void *_calloc(unsigned int nmemb, unsigned int size)
+int is_digit(char *str)
 {
-	char *ptr;
-
-	if (nmemb == 0 || size == 0)
-		return (NULL);
-	ptr = malloc(nmemb * size);
-	if (ptr == NULL)
-		return (NULL);
-	_memset(ptr, 0, nmemb * size);
-
-	return (ptr);
+	while (*str != '\0')
+	{
+		if (*str < '0' || *str > '9')
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
-
 /**
- * multiply - initialize array with 0 byte
- *
- * @s1: string 1
- * @s2: string 2
- *
- * Return: nothing
- */
-
-void multiply(char *s1, char *s2)
-{
-	int i, l1, l2, total_l, f_digit, s_digit, res = 0, tmp;
-	char *ptr;
-	void *temp;
-
-	l1 = _length(s1);
-	l2 = _length(s2);
-	tmp = l2;
-	total_l = l1 + l2;
-	ptr = _calloc(sizeof(int), total_l);
-
-	/* store our pointer address to free later */
-	temp = ptr;
-
-	for (l1--; l1 >= 0; l1--)
-	{
-		f_digit = s1[l1] - '0';
-		res = 0;
-		l2 = tmp;
-		for (l2--; l2 >= 0; l2--)
-		{
-			s_digit = s2[l2] - '0';
-			res += ptr[l2 + l1 + 1] + (f_digit * s_digit);
-			ptr[l1 + l2 + 1] = res % 10;
-			res /= 10;
-		}
-		if (res)
-			ptr[l1 + l2 + 1] = res % 10;
-	}
-
-	while (*ptr == 0)
-	{
-		ptr++;
-		total_l--;
-	}
-
-	for (i = 0; i < total_l; i++)
-		printf("%i", ptr[i]);
-	printf("\n");
-	free(temp);
-}
-
-
-/**
- * main - Entry point
- *
- * Description: a program that multiplies
- *            two positive numbers
- *
+ * main - multiply two numbrs
  * @argc: number of arguments
- * @argv: arguments array
+ * @argv: array of argument
  *
- * Return: 0 on success 98 on faliure
+ * Return: 0 on success, 98 on error
  */
-
 int main(int argc, char *argv[])
 {
-	char *n1 = argv[1];
-	char *n2 = argv[2];
+	int i, num1, num2, *result, len1, len2, t_len, digit, v = 0;
+	char *num1_str, *num2_str;
 
-	if (argc != 3 || check_number(n1) || check_number(n2))
+	num1_str = argv[1];
+	num2_str = argv[2];
+	if (argc != 3 || !is_digit(argv[1]) || !is_digit(argv[2]))
 		error_exit();
-
-	if (*n1 == '0' || *n2 == '0')
+	len1 = strlen(num1_str);
+	len2 = strlen(num2_str);
+	t_len = len1 + len2 + 1;
+	result = malloc(t_len * sizeof(int));
+	if (result == NULL)
+		error_exit();
+	for (i = 0; i <= len1 + len2; i++)
+		result[i] = 0;
+	for (len1 =  len1 - 1; len1 >= 0; len1--)
 	{
-		_putchar('0');
-		_putchar('\n');
+		num1 = num1_str[len1] - '0';
+		digit = 0;
+		for (len2 = len2 - 1; len2 >= 0; len2--)
+		{
+			num2 = num2_str[len2] - '0';
+			digit += result[len1 + len2 + 1] + (num1 * num2);
+			result[len1 + len2 + 1] = digit % 10;
+			digit /= 10;
+		}
+		if (digit > 0)
+			result[len1 + len2 + 1] += digit;
 	}
-	else
-		multiply(n1, n2);
+	for (i = 0; i < t_len - 1; i++)
+	{
+		if (result[i])
+			v = 1;
+		if (v)
+			_putchar(result[i] + '0');
+	}
+	if (!v)
+		_putchar('0');
+	_putchar('\n');
+	free(result);
 	return (0);
 }
